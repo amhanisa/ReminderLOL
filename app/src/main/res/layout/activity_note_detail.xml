@@ -8,7 +8,7 @@
 
     <EditText
         android:id="@+id/inputTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/cvTime"
         android:layout_marginStart="10dp"
@@ -16,8 +16,8 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Judul" />
+        android:hint="Judul"
+        android:inputType="textPersonName" />
 
     <TextView
         android:id="@+id/textView2"
@@ -25,14 +25,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/inputTitle"
         android:layout_marginLeft="10dp"
-        android:text="TextView" />
+        android:paddingLeft="4dp"
+        android:text="Notes" />
 
     <EditText
         android:id="@+id/inputNote"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView2"
         android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine" />

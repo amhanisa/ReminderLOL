@@ -1,13 +1,17 @@
 package com.example.reminderlol;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ReminderViewHolder> {
@@ -21,14 +25,17 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
 
     public class ReminderViewHolder extends RecyclerView.ViewHolder {
         public TextView txtTitle, txtNote, txtDate, txtTimestamp;
+        public CardView noteCard;
 
-        public ReminderViewHolder(@NonNull View itemView) {
+        public ReminderViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             txtTitle = itemView.findViewById(R.id.txtTitle);
             txtNote = itemView.findViewById(R.id.txtNote);
             txtDate = itemView.findViewById(R.id.txtDate);
             txtTimestamp = itemView.findViewById(R.id.txtTimeStamp);
+
+            noteCard = itemView.findViewById(R.id.cardview_note);
         }
     }
 
@@ -46,7 +53,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
             return;
         }
 
-        long id = mCursor.getLong(mCursor.getColumnIndex(ReminderContract.NoteEntry._ID));
+        final long id = mCursor.getLong(mCursor.getColumnIndex(ReminderContract.NoteEntry._ID));
         String title = mCursor.getString(mCursor.getColumnIndex(ReminderContract.NoteEntry.COLUMN_TITLE));
         String note = mCursor.getString(mCursor.getColumnIndex(ReminderContract.NoteEntry.COLUMN_NOTE));
         String date = mCursor.getString(mCursor.getColumnIndex(ReminderContract.NoteEntry.COLUMN_NOTIFICATION));
@@ -56,7 +63,18 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
         holder.txtTitle.setText(title);
         holder.txtNote.setText(note);
         holder.txtDate.setText(date);
-        holder.txtTimestamp.setText(timestamp);
+        holder.txtTimestamp.setText("timestamp : " + timestamp);
+
+        holder.noteCard.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mContext, Long.toString(id), Toast.LENGTH_LONG).show();
+                Intent viewDetail = new Intent(mContext, AddNote.class);
+                viewDetail.putExtra("id", id);
+                ((Activity) mContext).startActivityForResult(viewDetail, 0);
+            }
+        });
     }
 
     @Override

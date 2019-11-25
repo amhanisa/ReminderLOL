@@ -1,7 +1,6 @@
 package com.example.reminderlol;
 
 import android.app.Activity;
-import android.app.Notification;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,14 +22,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import static com.example.reminderlol.App.CHANNEL_1_ID;
-import static com.example.reminderlol.App.CHANNEL_2_ID;
-
 public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase mDatabase;
     private ReminderAdapter reminderAdapter;
-
-    private NotificationManagerCompat notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         reminderAdapter = new ReminderAdapter(this, getAllItems());
         recyclerView.setAdapter(reminderAdapter);
-        notificationManager = NotificationManagerCompat.from(this);
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -66,14 +58,6 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Notification notification = new NotificationCompat.Builder(MainActivity.this, CHANNEL_1_ID)
-                        .setSmallIcon(R.drawable.ic_launcher_background)
-                        .setContentTitle("ads")
-                        .setContentText("asd")
-                        .build();
-
-                notificationManager.notify(1, notification);
                 Intent addNote = new Intent(MainActivity.this, AddNote.class);
                 startActivityForResult(addNote, 0);
             }
@@ -85,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
             reminderAdapter.swapCursor(getAllItems());
-            reminderAdapter.notifyDataSetChanged();
             Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show();
         }
     }

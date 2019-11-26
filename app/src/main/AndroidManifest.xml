@@ -10,7 +10,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewNote"></activity>
+        <activity
+            android:name=".Setting"
+            android:label="Preferences"
+            android:theme="@style/Widget.AppCompat.Toolbar"/>
+        <activity android:name=".ViewNote" />
         <activity android:name=".AddNote" />
         <activity
             android:name=".MainActivity"

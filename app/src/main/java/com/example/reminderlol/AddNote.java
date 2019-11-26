@@ -22,7 +22,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,6 +34,7 @@ public class AddNote extends AppCompatActivity implements TimePickerDialog.OnTim
     private EditText inputTitle, inputNote;
     private Button btnAdd;
     private Calendar inputCalendar;
+    private long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class AddNote extends AppCompatActivity implements TimePickerDialog.OnTim
 
 
         Intent viewNote = getIntent();
-        final long id = viewNote.getLongExtra("id", 0);
+        id = viewNote.getLongExtra("id", 0);
 
 
         ReminderDBHelper dbHelper = new ReminderDBHelper(this);
@@ -57,12 +57,11 @@ public class AddNote extends AppCompatActivity implements TimePickerDialog.OnTim
 
         inputCalendar = Calendar.getInstance();
 
-        if (id >= 0) {
+        if (id > 0) {
             getNoteDetail(id);
         } else {
             setReminderTime();
         }
-
 
         txtDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,10 +88,10 @@ public class AddNote extends AppCompatActivity implements TimePickerDialog.OnTim
                 if (id > 0) {
                     updateItem(id);
                 } else {
-                    addItem();
+                   id = addItem();
                 }
 
-                addNotification();
+                addNotification(id);
                 Intent returnIntent = new Intent();
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
@@ -121,10 +120,8 @@ public class AddNote extends AppCompatActivity implements TimePickerDialog.OnTim
         txtDate.setText(DateFormat.format("yyyy-MM-dd", inputCalendar).toString());
     }
 
-    public void addItem() {
-        if (inputTitle.getText().toString().trim().length() == 00 && inputNote.getText().toString().trim().length() == 0) {
-            return;
-        }
+    public long addItem() {
+
 
         String title = inputTitle.getText().toString();
         String note = inputNote.getText().toString();
@@ -135,11 +132,11 @@ public class AddNote extends AppCompatActivity implements TimePickerDialog.OnTim
         cv.put(ReminderContract.NoteEntry.COLUMN_NOTE, note);
         cv.put(ReminderContract.NoteEntry.COLUMN_NOTIFICATION, date);
 
-        mDatabase.insert(ReminderContract.NoteEntry.TABLE_NAME, null, cv);
+        return mDatabase.insert(ReminderContract.NoteEntry.TABLE_NAME, null, cv);
     }
 
     public void updateItem(long id) {
-        if (inputTitle.getText().toString().trim().length() == 00 && inputNote.getText().toString().trim().length() == 0) {
+        if (inputTitle.getText().toString().trim().length() == 0 && inputNote.getText().toString().trim().length() == 0) {
             return;
         }
 
@@ -157,20 +154,16 @@ public class AddNote extends AppCompatActivity implements TimePickerDialog.OnTim
 
     }
 
-    public void addNotification() {
+    public void addNotification(long id) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
         intent.putExtra("title", inputTitle.getText().toString());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) id, intent, 0);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, inputCalendar.getTimeInMillis(), pendingIntent);
     }
 
-    public void deleteNotification() {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, AlertReceiver.class);
-        intent.putExtra("title", inputTitle.getText().toString());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
-        alarmManager.cancel(pendingIntent);
+    public void deleteNotification(long id) {
+
     }
 
     public void getNoteDetail(long id) {

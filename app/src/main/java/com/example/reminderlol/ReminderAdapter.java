@@ -24,7 +24,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
     }
 
     public class ReminderViewHolder extends RecyclerView.ViewHolder {
-        public TextView txtTitle, txtNote, txtDate, txtTimestamp;
+        public TextView txtTitle, txtNote, txtDate;
         public CardView noteCard;
 
         public ReminderViewHolder(@NonNull final View itemView) {
@@ -33,7 +33,6 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
             txtTitle = itemView.findViewById(R.id.txtTitle);
             txtNote = itemView.findViewById(R.id.txtNote);
             txtDate = itemView.findViewById(R.id.txtDate);
-            txtTimestamp = itemView.findViewById(R.id.txtTimeStamp);
 
             noteCard = itemView.findViewById(R.id.cardview_note);
         }
@@ -57,13 +56,11 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
         String title = mCursor.getString(mCursor.getColumnIndex(ReminderContract.NoteEntry.COLUMN_TITLE));
         String note = mCursor.getString(mCursor.getColumnIndex(ReminderContract.NoteEntry.COLUMN_NOTE));
         String date = mCursor.getString(mCursor.getColumnIndex(ReminderContract.NoteEntry.COLUMN_NOTIFICATION));
-        String timestamp = mCursor.getString(mCursor.getColumnIndex(ReminderContract.NoteEntry.COLUMN_TIMESTAMP));
 
         holder.itemView.setTag(id);
         holder.txtTitle.setText(title);
         holder.txtNote.setText(note);
         holder.txtDate.setText(date);
-        holder.txtTimestamp.setText("timestamp : " + timestamp);
 
         holder.noteCard.setOnClickListener(new View.OnClickListener() {
 

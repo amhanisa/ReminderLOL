@@ -1,9 +1,14 @@
 package com.example.reminderlol;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -12,11 +17,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationManagerCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,8 +43,24 @@ public class MainActivity extends AppCompatActivity {
         ReminderDBHelper dbHelper = new ReminderDBHelper(this);
         mDatabase = dbHelper.getWritableDatabase();
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        int layout = Integer.parseInt(sharedPreferences.getString("layout_preference", "1"));
+        boolean darkMode = sharedPreferences.getBoolean("dark_preference", false);
+
+
+        if (darkMode) {
+            findViewById(R.id.frag_container).setBackgroundColor(Color.parseColor("#333333"));
+        } else {
+            findViewById(R.id.frag_container).setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+
+
         RecyclerView recyclerView = findViewById(R.id.recylerview_remindernote);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        if (layout == 1) {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        } else {
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        }
         reminderAdapter = new ReminderAdapter(this, getAllItems());
         recyclerView.setAdapter(reminderAdapter);
 
@@ -65,6 +88,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        int layout = Integer.parseInt(sharedPreferences.getString("layout_preference", "1"));
+        boolean darkMode = sharedPreferences.getBoolean("dark_preference", false);
+
+
+        if (darkMode) {
+            findViewById(R.id.frag_container).setBackgroundColor(Color.parseColor("#333333"));
+        } else {
+            findViewById(R.id.frag_container).setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+
+        RecyclerView recyclerView = findViewById(R.id.recylerview_remindernote);
+        if (layout == 1) {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        } else {
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
@@ -89,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, Setting.class));
             return true;
         }
 
@@ -103,7 +150,12 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private void removeItem(long id){
+    private void removeItem(long id) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) id, intent, 0);
+        alarmManager.cancel(pendingIntent);
+
         mDatabase.delete(ReminderContract.NoteEntry.TABLE_NAME,
                 ReminderContract.NoteEntry._ID + "=" + id, null);
         reminderAdapter.swapCursor(getAllItems());

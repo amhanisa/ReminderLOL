@@ -19,5 +19,6 @@
         android:entries="@array/LayoutLabel"
         android:entryValues="@array/LayoutValues"
         android:key="layout_preference"
+        android:summary="Grid or Linear Layout"
         android:title="Note Layout" />
 </PreferenceScreen>

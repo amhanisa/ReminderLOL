@@ -12,8 +12,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Setting"
-            android:label="Preferences"
-            android:theme="@style/Widget.AppCompat.Toolbar"/>
+            android:label="Settings"
+            android:theme="@style/AppTheme"/>
         <activity android:name=".ViewNote" />
         <activity android:name=".AddNote" />
         <activity

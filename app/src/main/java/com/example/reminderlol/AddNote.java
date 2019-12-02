@@ -170,6 +170,7 @@ public class AddNote extends AppCompatActivity implements TimePickerDialog.OnTim
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
         intent.putExtra("title", inputTitle.getText().toString());
+        intent.putExtra("note", inputNote.getText().toString());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) id, intent, 0);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, inputCalendar.getTimeInMillis(), pendingIntent);
     }

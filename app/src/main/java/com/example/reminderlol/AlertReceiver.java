@@ -17,7 +17,7 @@ public class AlertReceiver extends BroadcastReceiver {
         Notification notification = new NotificationCompat.Builder(context, CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle(intent.getStringExtra("title"))
-                .setContentText("asd")
+                .setContentText(intent.getStringExtra("note"))
                 .build();
 
         notificationManager.notify(1, notification);

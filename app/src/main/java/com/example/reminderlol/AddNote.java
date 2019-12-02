@@ -1,6 +1,8 @@
 package com.example.reminderlol;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
 
@@ -16,6 +18,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -39,9 +43,17 @@ public class AddNote extends AppCompatActivity implements TimePickerDialog.OnTim
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+            setTheme(R.style.DarkTheme);
+        } else{
+            setTheme(R.style.LightTheme);
+        }
         setContentView(R.layout.activity_note_detail);
 
-
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent viewNote = getIntent();
         id = viewNote.getLongExtra("id", 0);
 
@@ -200,5 +212,20 @@ public class AddNote extends AppCompatActivity implements TimePickerDialog.OnTim
         inputNote.setText(note);
         txtDate.setText(DateFormat.format("yyyy-MM-dd", inputCalendar).toString());
         txtTime.setText(DateFormat.format("HH:mm", inputCalendar).toString());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
     }
 }

@@ -7,12 +7,6 @@
             android:defaultValue="false"
             android:key="dark_preference"
             android:title="Dark Mode" />
-        <EditTextPreference
-            android:defaultValue="Default value"
-            android:key="edit_text_preference_1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="Edit text preference" />
     </PreferenceCategory>
     <ListPreference
         android:defaultValue="1"

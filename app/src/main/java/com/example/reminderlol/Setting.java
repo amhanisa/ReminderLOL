@@ -3,9 +3,10 @@ package com.example.reminderlol;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceFragmentCompat;
 
 public class Setting extends AppCompatActivity {
@@ -19,27 +20,19 @@ public class Setting extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+            setTheme(R.style.DarkTheme);
+        } else{
+            setTheme(R.style.LightTheme);
+        }
         setContentView(R.layout.setting);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.setting_frag, new PreferenceFragment()).commit();
     }
-
-
-//    @Override
-//    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-//        System.out.println("ada yang berubah");
-//        if(s.equals("dark_preference")){
-//            if(sharedPreferences.getBoolean(s, false)){
-//                findViewById(R.id.setting_frag).setBackgroundColor(Color.parseColor("#333333"));
-//                System.out.println("hey");
-//            } else{
-//                findViewById(R.id.setting_frag).setBackgroundColor(Color.parseColor("#FFFFFF"));
-//                System.out.println("hay");
-//            }
-//        }
-//    }
 
     public static class PreferenceFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -65,11 +58,9 @@ public class Setting extends AppCompatActivity {
             System.out.println("ada yang berubah");
             if (s.equals("dark_preference")) {
                 if (sharedPreferences.getBoolean(s, false)) {
-                    getActivity().findViewById(R.id.setting_frag).setBackgroundColor(Color.parseColor("#333333"));
-                    System.out.println("hey");
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 } else {
-                    getActivity().findViewById(R.id.setting_frag).setBackgroundColor(Color.parseColor("#FFFFFF"));
-                    System.out.println("hay");
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
             }
         }

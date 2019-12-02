@@ -16,6 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -36,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+            setTheme(R.style.DarkTheme);
+        } else{
+            setTheme(R.style.LightTheme);
+        }
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -45,15 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         int layout = Integer.parseInt(sharedPreferences.getString("layout_preference", "1"));
-        boolean darkMode = sharedPreferences.getBoolean("dark_preference", false);
-
-
-        if (darkMode) {
-            findViewById(R.id.frag_container).setBackgroundColor(Color.parseColor("#333333"));
-        } else {
-            findViewById(R.id.frag_container).setBackgroundColor(Color.parseColor("#FFFFFF"));
-        }
-
 
         RecyclerView recyclerView = findViewById(R.id.recylerview_remindernote);
         if (layout == 1) {
@@ -92,13 +91,11 @@ public class MainActivity extends AppCompatActivity {
         super.onPostResume();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         int layout = Integer.parseInt(sharedPreferences.getString("layout_preference", "1"));
-        boolean darkMode = sharedPreferences.getBoolean("dark_preference", false);
 
-
-        if (darkMode) {
-            findViewById(R.id.frag_container).setBackgroundColor(Color.parseColor("#333333"));
-        } else {
-            findViewById(R.id.frag_container).setBackgroundColor(Color.parseColor("#FFFFFF"));
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+            setTheme(R.style.DarkTheme);
+        } else{
+            setTheme(R.style.LightTheme);
         }
 
         RecyclerView recyclerView = findViewById(R.id.recylerview_remindernote);

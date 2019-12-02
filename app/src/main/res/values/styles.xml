@@ -17,4 +17,29 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+
+    <style name="LightTheme" parent="AppTheme.NoActionBar">
+        <!--<item name="android:textAppearanceLarge">#000000</item>-->
+        <item name="android:textColor">#000000</item>
+        <item name="textColor">#000000</item>
+        <item name="metaTextColor">#606060</item>
+        <item name="bgColor">#ffffff</item>
+    </style>
+
+    <style name="DarkTheme" parent="AppTheme.NoActionBar">
+        <item name="android:textColor">#ffffff</item>
+        <item name="textColor">#ffffff</item>
+        <item name="metaTextColor">#aeaeae</item>
+        <item name="bgColor">#121212</item>
+    </style>
+
+    <style name="MyTextAppearance" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">#ff0000</item>
+    </style>
 </resources>

@@ -66,7 +66,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, Long.toString(id), Toast.LENGTH_LONG).show();
+//                Toast.makeText(mContext, Long.toString(id), Toast.LENGTH_LONG).show();
                 Intent viewDetail = new Intent(mContext, AddNote.class);
                 viewDetail.putExtra("id", id);
                 ((Activity) mContext).startActivityForResult(viewDetail, 0);

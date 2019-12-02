@@ -43,9 +43,13 @@ public class MainActivity extends AppCompatActivity {
         } else{
             setTheme(R.style.LightTheme);
         }
-
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+            toolbar.setPopupTheme(R.style.PopupDark);
+        } else{
+            toolbar.setPopupTheme(R.style.PopipLight);
+        }
         setSupportActionBar(toolbar);
 
         ReminderDBHelper dbHelper = new ReminderDBHelper(this);

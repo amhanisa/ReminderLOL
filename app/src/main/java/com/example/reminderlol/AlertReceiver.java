@@ -18,6 +18,8 @@ public class AlertReceiver extends BroadcastReceiver {
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle(intent.getStringExtra("title"))
                 .setContentText(intent.getStringExtra("note"))
+                .setStyle(new NotificationCompat.BigTextStyle()
+                .bigText(intent.getStringExtra("note")))
                 .build();
 
         notificationManager.notify(1, notification);

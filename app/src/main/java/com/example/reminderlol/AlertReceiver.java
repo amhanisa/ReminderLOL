@@ -22,6 +22,6 @@ public class AlertReceiver extends BroadcastReceiver {
                 .bigText(intent.getStringExtra("note")))
                 .build();
 
-        notificationManager.notify(1, notification);
+        notificationManager.notify(intent.getIntExtra("id",0), notification);
     }
 }
